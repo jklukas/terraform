@@ -245,6 +245,11 @@ func resourceAwsRedshiftCluster() *schema.Resource {
 				Optional: true,
 			},
 
+			"owner_account": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
+
 			"tags": tagsSchema(),
 		},
 	}
@@ -276,6 +281,10 @@ func resourceAwsRedshiftClusterCreate(d *schema.ResourceData, meta interface{}) 
 
 		if v, ok := d.GetOk("snapshot_cluster_identifier"); ok {
 			restoreOpts.SnapshotClusterIdentifier = aws.String(v.(string))
+		}
+
+		if v, ok := d.GetOk("owner_account"); ok {
+			restoreOpts.OwnerAccount = aws.String(v.(string))
 		}
 
 		if v, ok := d.GetOk("availability_zone"); ok {
